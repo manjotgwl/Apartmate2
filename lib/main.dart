@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // using an env file for database connection parameters
   await dotenv.load(fileName: '.env');
 
   await Supabase.initialize(
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // must pass the connectivity gate to first enter the app,
+    // making the app online only
     return const MaterialApp(home: ConnectivityGate());
   }
 }

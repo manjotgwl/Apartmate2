@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:opendoor/models/profile.dart';
 import 'package:opendoor/providers/profile_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../repositories/auth_repository.dart';
 
@@ -27,6 +26,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void dispose() {
+    super.dispose();
     _displayNameController.dispose();
     _bioController.dispose();
     _phoneController.dispose();
@@ -40,8 +40,10 @@ class _ProfileViewState extends State<ProfileView> {
         .read<
           ProfileProvider
         >(); // access provider w/o subscribing to notifications
+             // because we are just reading some info rq
     final Profile? currentProfile = provider.profile;
 
+    // return early is profile is still loading or no profile was fetched
     if (provider.isLoading || currentProfile == null) {
       return;
     }
@@ -59,6 +61,7 @@ class _ProfileViewState extends State<ProfileView> {
       return;
     }
 
+    // If no error message, then show success
     if (provider.errorMessage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile udpated successfully!')),
@@ -71,9 +74,10 @@ class _ProfileViewState extends State<ProfileView> {
     final provider = context
         .watch<
           ProfileProvider
-        >(); // access provider and subscribe to notifications
+        >(); // access provider and subscribe to notifications (rebuild view if profile changes)
     final profile = provider.profile;
 
+    // If profile not fetched, show blank profile page and a button to retry loading the profile
     if (profile == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('My Profile')),

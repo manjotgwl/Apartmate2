@@ -3,6 +3,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:material_ui/material_ui.dart';
 import 'package:opendoor/views/auth_gate.dart';
 import 'package:opendoor/repositories/auth_repository.dart';
+import 'package:opendoor/views/no_internet_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ConnectivityGate extends StatefulWidget {
@@ -41,24 +42,3 @@ class _ConnectivityGateState extends State<ConnectivityGate> {
   }
 }
 
-class NoInternetView extends StatelessWidget {
-  const NoInternetView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.wifi_off, size: 64),
-            SizedBox(height: 16),
-            Text('No Internet Connection', style: TextStyle(fontSize: 22)),
-            SizedBox(height: 8),
-            Text('Please connect to the internet.'),
-          ],
-        ),
-      ),
-    );
-  }
-}

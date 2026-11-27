@@ -26,9 +26,12 @@ class AuthGate extends StatelessWidget {
           return LoginView(authRepository: authRepository);
         }
 
+        // key makes sure different users get different providers
         return ChangeNotifierProvider(
           key: ValueKey(user.id),
           create: (_) =>
+
+              // create provider and instantly call loadProfile on it
               ProfileProvider(ProfileRepository(Supabase.instance.client))
                 ..loadProfile(user.id),
           child: ProfileView(authRepository: authRepository),
