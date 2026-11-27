@@ -20,7 +20,11 @@ class ProfileRepository {
   Future<void> updateProfile(Profile profile) async {
     await _client
         .from('profiles')
-        .update({'display_name': profile.displayName, 'bio': profile.bio})
+        .update({
+          'display_name': profile.displayName,
+          'bio': profile.bio,
+          'phone_number': profile.phoneNumber,
+        })
         .eq('id', profile.id);
   }
 }

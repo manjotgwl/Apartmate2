@@ -22,7 +22,7 @@ class AuthRepository {
     return _client.auth.signUp(
       email: email,
       password: password,
-      phone: phoneNumber,
+      data: {'phone_number': phoneNumber},
     );
   }
 
