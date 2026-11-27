@@ -1,5 +1,6 @@
 // ignore: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:opendoor/views/signup_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../repositories/auth_repository.dart';
@@ -16,13 +17,16 @@ class LoginView extends StatefulWidget {
 
 // The state for the login page
 class _LoginViewState extends State<LoginView> {
-  final _formKey = GlobalKey<FormState>();  // so we can set up validators for each text field
-  final _emailController = TextEditingController();  // text field for email
-  final _passwordController = TextEditingController();  // text field for password
+  final _formKey =
+      GlobalKey<FormState>(); // so we can set up validators for each text field
+  final _emailController = TextEditingController(); // text field for email
+  final _passwordController =
+      TextEditingController(); // text field for password
 
-  bool _isLoading = false;  // keep track or whether or not a login request is already underway
-  bool _obscurePassword = true;  // show or hide password 
-  String? _errorMessage; 
+  bool _isLoading =
+      false; // keep track or whether or not a login request is already underway
+  bool _obscurePassword = true; // show or hide password
+  String? _errorMessage;
 
   @override
   void dispose() {
@@ -49,10 +53,9 @@ class _LoginViewState extends State<LoginView> {
         _passwordController.text,
       );
     } on AuthException catch (e) {
-
-      // when Authentication succeeds, AuthGate might have already removed LoginView from 
-      // the widget tree before signIn finishes, and setState on an inactive widget is 
-      // undefined behavior
+      // when Authentication succeeds, AuthGate might have already removed LoginView from
+      // the widget tree before signIn finishes, and setState on an inactive widget is
+      // ane error
 
       // True for the rest of the if (mounted) checks in this file as well
       if (mounted) {
@@ -96,7 +99,8 @@ class _LoginViewState extends State<LoginView> {
                       labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) { // validate email
+                    validator: (value) {
+                      // validate email
                       if (value == null || value.trim().isEmpty) {
                         return 'Enter your email';
                       }
@@ -104,15 +108,16 @@ class _LoginViewState extends State<LoginView> {
                     },
                   ),
 
-                  const SizedBox(height: 16),  // effectively a Spacer
+                  const SizedBox(height: 16), // effectively a Spacer
 
                   TextFormField(
                     controller: _passwordController,
-                    obscureText: _obscurePassword,  // use field to hide password
+                    obscureText: _obscurePassword, // use field to hide password
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(  // see: https://stackoverflow.com/questions/67881714/flutter-textformfield-obscure-password
+                      suffixIcon: IconButton(
+                        // see: https://stackoverflow.com/questions/67881714/flutter-textformfield-obscure-password
                         icon: Icon(
                           _obscurePassword
                               ? Icons.visibility
@@ -135,7 +140,7 @@ class _LoginViewState extends State<LoginView> {
 
                   const SizedBox(height: 16),
 
-                  if (_errorMessage != null)  // show error message if not empty
+                  if (_errorMessage != null) // show error message if not empty
                     Text(
                       _errorMessage!,
                       style: TextStyle(
@@ -148,16 +153,33 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                      onPressed: _isLoading ? null : _signIn,  // hide sign in button in case sign in is already
-                                                               // being processed and to avoid double sign in calls
+                      onPressed: _isLoading ? null : _signIn, // hide sign in button in case sign in is already
+                      // being processed and to avoid double sign in calls
                       child: _isLoading
-                          ? const SizedBox(  // show a loading circle if sign is already being processed
+                          ? const SizedBox(
+                              // show a loading circle if sign is already being processed
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Text('Sign In'),
                     ),
+                  ),
+
+                  TextButton(
+                    onPressed: _isLoading
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignupView(
+                                  authRepository: widget.authRepository,
+                                ),
+                              ),
+                            );
+                          },
+                    child: const Text("Don't have an account yet? Sign up"),
                   ),
                 ],
               ),
