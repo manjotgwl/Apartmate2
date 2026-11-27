@@ -4,6 +4,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'login_view.dart';
 
+import 'package:provider/provider.dart';
+
+import '../providers/profile_provider.dart';
+import '../repositories/profile_repository.dart';
+import 'profile_view.dart';
+
 class AuthGate extends StatelessWidget {
   final AuthRepository authRepository;
 
@@ -20,7 +26,13 @@ class AuthGate extends StatelessWidget {
           return LoginView(authRepository: authRepository);
         }
 
-        return const Scaffold(body: Center(child: Text('Home Screen')));
+        return ChangeNotifierProvider(
+          key: ValueKey(user.id),
+          create: (_) =>
+              ProfileProvider(ProfileRepository(Supabase.instance.client))
+                ..loadProfile(user.id),
+          child: ProfileView(authRepository: authRepository),
+        );
       },
     );
   }

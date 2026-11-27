@@ -1,4 +1,3 @@
-// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -140,7 +139,8 @@ class _SignupViewState extends State<SignupView> {
                         return 'Enter your phone number';
                       }
 
-                      if (!RegExp(r'^\+[1-9]\d{1,14}$').hasMatch(value.trim())) {
+                      if (!RegExp(r'^\+[1-9]\d{1,14}$')
+                          .hasMatch(value.trim())) {
                         return 'Enter a phone number with country code';
                       }
 

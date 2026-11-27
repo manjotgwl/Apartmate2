@@ -16,7 +16,7 @@ class ProfileRepository {
     return Profile.fromJson(data);
   }
 
-  // Saves the display name and bio for the matching profile ID.
+  // Saves the display name, bio, and phone number for the matching profile
   Future<void> updateProfile(Profile profile) async {
     await _client
         .from('profiles')

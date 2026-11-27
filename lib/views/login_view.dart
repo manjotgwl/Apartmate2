@@ -1,4 +1,3 @@
-// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:opendoor/views/signup_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
