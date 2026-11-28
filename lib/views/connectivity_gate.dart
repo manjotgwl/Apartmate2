@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:opendoor/views/auth_gate.dart';
 import 'package:opendoor/repositories/auth_repository.dart';
 import 'package:opendoor/views/no_internet_view.dart';

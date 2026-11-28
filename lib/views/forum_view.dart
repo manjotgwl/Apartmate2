@@ -1,7 +1,9 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:opendoor/providers/forum_provider.dart';
 import 'package:provider/provider.dart';
 
+// TODO (Manjot): comment class and implement filtering functionality,
+// and create post and delete post buttons.
 class ForumView extends StatelessWidget {
   const ForumView({super.key});
 
