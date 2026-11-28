@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:opendoor/providers/forum_provider.dart';
 import 'package:opendoor/repositories/auth_repository.dart';
+import 'package:opendoor/repositories/forum_repository.dart';
+import 'package:opendoor/views/forum_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'login_view.dart';
 
 import 'package:provider/provider.dart';
 
-import '../providers/profile_provider.dart';
-import '../repositories/profile_repository.dart';
-import 'profile_view.dart';
 
 class AuthGate extends StatelessWidget {
   final AuthRepository authRepository;
@@ -31,9 +31,12 @@ class AuthGate extends StatelessWidget {
           key: ValueKey(user.id),
           create: (_) =>
               // create provider and instantly call loadProfile on it
-              ProfileProvider(ProfileRepository(Supabase.instance.client))
-                ..loadProfile(user.id),
-          child: ProfileView(authRepository: authRepository),
+              ForumProvider(ForumRepository(Supabase.instance.client))
+                ..loadPosts(),
+
+                // TODO (ALL): change from calling just one specific view to
+                // a HomeView with tabs for everything we have so far
+          child: const ForumView(),
         );
       },
     );

@@ -35,6 +35,7 @@ class ForumProvider extends ChangeNotifier {
   PostType? get typeFilter => _typeFilter;
   String? get categoryFilter => _categoryFilter;
 
+  // Returns a list of filtered posts, filtered by either type and or category
   List<ForumPost> get filteredPosts {
     return _posts.where((post) {
       final matchesType = _typeFilter == null || post.type == _typeFilter;
@@ -59,10 +60,12 @@ class ForumProvider extends ChangeNotifier {
     }
   }
 
+  // Returns a List of Forum Posts for a specific user
   Future<List<ForumPost>> getPostsByUser(String id) async {
     return await _repository.getPostsByUser(id);
   }
 
+  // setters for filters
   void setTypeFilter(PostType? type) {
     _typeFilter = type;
     _notify();
@@ -79,6 +82,8 @@ class ForumProvider extends ChangeNotifier {
     _notify();
   }
 
+  // Loads all active posts (which post is 'active' is decided by constants in
+  // forum_repository.dart)
   Future<void> loadPosts() async {
     if (isChanging || isLoading) {
       return;
@@ -98,6 +103,8 @@ class ForumProvider extends ChangeNotifier {
     }
   }
 
+  // Creates a post, returns a boolean representing whether or not the creation
+  // was a success.
   Future<bool> createPost({
     required String title,
     required String description,
@@ -130,6 +137,8 @@ class ForumProvider extends ChangeNotifier {
     }
   }
 
+  // Updates a post, checks the database against the passed in post's id and
+  // updates the rows that matched. Returns a bool indicating success.
   Future<bool> updatePost(ForumPost post) async {
     if (isChanging || isLoading) {
       return false;
@@ -153,6 +162,7 @@ class ForumProvider extends ChangeNotifier {
     }
   }
 
+  // Deletes a given post, returns a boolean indicating success.
   Future<bool> deletePost(ForumPost post) async {
     if (isChanging || isLoading) {
       return false;
