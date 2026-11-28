@@ -21,11 +21,13 @@ class AuthRepository {
     return _client.auth.signUp(
       email: email,
       password: password,
-      data: {'phone_number': phoneNumber},  // NOTE: here we don't use the phone field because that'll
-                                            // also require the user to verify their phone number.
-                                            // For now, the phone number is strictly only for item lending
-                                            // and facilitation of communication, so we wont verify it,
-                                            // at least for now.
+      data: {
+        'phone_number': phoneNumber,
+      }, // NOTE: here we don't use the phone field because that'll
+      // also require the user to verify their phone number.
+      // For now, the phone number is strictly only for item lending
+      // and facilitation of communication, so we wont verify it,
+      // at least for now.
     );
   }
 

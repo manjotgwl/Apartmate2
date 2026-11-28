@@ -40,7 +40,7 @@ class _ProfileViewState extends State<ProfileView> {
         .read<
           ProfileProvider
         >(); // access provider w/o subscribing to notifications
-             // because we are just reading some info rq
+    // because we are just reading some info rq
     final Profile? currentProfile = provider.profile;
 
     // return early is profile is still loading or no profile was fetched
@@ -71,10 +71,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context
-        .watch<
-          ProfileProvider
-        >(); // access provider and subscribe to notifications (rebuild view if profile changes)
+    final provider = context.watch<ProfileProvider>(); // access provider and subscribe to notifications (rebuild view if profile changes)
     final profile = provider.profile;
 
     // If profile not fetched, show blank profile page and a button to retry loading the profile

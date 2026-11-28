@@ -1,29 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:opendoor/models/location_status.dart';
 import 'package:opendoor/repositories/location_repository.dart';
-
-/// Where the app is in getting the phone's position. Views use this to
-/// pick which banner to show and turn it into translated text.
-enum LocationStatus {
-  /// Checking permission or waiting for a position.
-  checking,
-
-  /// A position is known, so distances can be shown.
-  available,
-
-  /// Location services are turned off on the phone.
-  serviceOff,
-
-  /// The user said no to location access but can be asked again.
-  denied,
-
-  /// The user said no permanently, so only Settings can change it.
-  deniedForever,
-
-  /// Getting a position failed or took too long.
-  failed,
-}
 
 /// Holds the phone's GPS position so screens can show distances. The
 /// position stays on the phone: nothing here uploads it. Phone access

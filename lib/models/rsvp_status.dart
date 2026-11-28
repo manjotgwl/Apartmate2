@@ -12,5 +12,6 @@ enum RsvpStatus {
   /// params:
   /// - name: the saved text, such as 'going'
   /// returns: the matching status, or null if the text doesn't match one
-  static RsvpStatus? fromName(String? name) => RsvpStatus.values.asNameMap()[name];
+  static RsvpStatus? fromName(String? name) =>
+      RsvpStatus.values.asNameMap()[name];
 }

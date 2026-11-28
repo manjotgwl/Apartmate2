@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:opendoor/models/profile.dart';
 import 'package:opendoor/repositories/profile_repository.dart';
 
-// Profile Provider that basically proxies the Methods found in 
-// profile repository. This is necessary to keep the app functioning 
+// Profile Provider that basically proxies the Methods found in
+// profile repository. This is necessary to keep the app functioning
 // locally as well.
 class ProfileProvider extends ChangeNotifier {
-  final ProfileRepository _repository;  // the profile table in remote db
+  final ProfileRepository _repository; // the profile table in remote db
 
-  Profile? _profile;  // current profile, local
-  bool _isLoading = false;  // flag used to show that profile is info is loading or not
+  Profile? _profile; // current profile, local
+  bool _isLoading = false; // flag used to show that profile is
+  // info is loading or not
+  bool _disposed = false;
   String? _errorMessage;
 
   ProfileProvider(this._repository);
@@ -23,7 +25,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> loadProfile(String id) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners(); // must notify listeners here because we updated isLoading
+    _notify(); // must notify listeners here because we updated isLoading
 
     try {
       _profile = await _repository.getProfile(id);
@@ -31,7 +33,7 @@ class ProfileProvider extends ChangeNotifier {
       _errorMessage = 'Failed to load profile ($id)';
     } finally {
       _isLoading = false;
-      notifyListeners();
+      _notify();
     }
   }
 
@@ -39,7 +41,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> updateProfile(Profile profile) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _notify();
 
     try {
       await _repository.updateProfile(profile);
@@ -48,6 +50,20 @@ class ProfileProvider extends ChangeNotifier {
       _errorMessage = 'Failed to update profile';
     } finally {
       _isLoading = false;
+      _notify();
+    }
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  // use to guard against calling notifyListeners on an already disposed
+  // provider
+  void _notify() {
+    if (!_disposed) {
       notifyListeners();
     }
   }

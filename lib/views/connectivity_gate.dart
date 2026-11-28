@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:opendoor/views/auth_gate.dart';
@@ -41,4 +40,3 @@ class _ConnectivityGateState extends State<ConnectivityGate> {
     );
   }
 }
-

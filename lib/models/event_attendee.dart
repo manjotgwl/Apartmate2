@@ -32,7 +32,8 @@ class EventAttendee {
     return EventAttendee(
       userId: json['user_id'] as String,
       displayName: profile?['display_name'] as String? ?? '',
-      status: RsvpStatus.fromName(json['status'] as String?) ?? RsvpStatus.maybe,
+      status:
+          RsvpStatus.fromName(json['status'] as String?) ?? RsvpStatus.maybe,
     );
   }
 

@@ -4,71 +4,14 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:opendoor/models/event.dart';
 import 'package:opendoor/models/event_attendee.dart';
+import 'package:opendoor/models/event_form_issue.dart';
+import 'package:opendoor/models/event_problem.dart';
 import 'package:opendoor/models/event_type.dart';
 import 'package:opendoor/models/rsvp_status.dart';
 import 'package:opendoor/providers/location_provider.dart';
 import 'package:opendoor/repositories/calendar_repository.dart';
 import 'package:opendoor/repositories/event_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-/// Things that can go wrong with an event action. Views turn these into
-/// translated messages, so the provider never holds user-facing text.
-enum EventProblem {
-  /// Events couldn't be loaded, usually because the phone is offline.
-  loadFailed,
-
-  /// The event already has as many people going as its cap allows.
-  full,
-
-  /// The event has already ended.
-  ended,
-
-  /// The host tried to leave or change their RSVP to their own event.
-  hostCannotLeave,
-
-  /// Someone other than the host tried to edit or cancel the event.
-  notHost,
-
-  /// The form has at least one issue from [EventProvider.validate].
-  invalidForm,
-
-  /// The event was saved, but adding it to Google Calendar failed.
-  calendarFailed,
-
-  /// A change couldn't be saved, usually because the phone is offline.
-  saveFailed,
-}
-
-/// Problems with the create or edit event form, shown next to each field.
-enum EventFormIssue {
-  /// The title is empty.
-  titleMissing,
-
-  /// The title is longer than [EventProvider.titleMaxLength].
-  titleTooLong,
-
-  /// The place is empty.
-  placeMissing,
-
-  /// The details are longer than [EventProvider.detailsMaxLength].
-  detailsTooLong,
-
-  /// The start time isn't in the future.
-  startInPast,
-
-  /// The start time is past the last day in the week strip.
-  startTooFar,
-
-  /// The end time isn't after the start time.
-  endNotAfterStart,
-
-  /// The cap is outside [EventProvider.minPeople] to
-  /// [EventProvider.maxPeopleLimit].
-  maxPeopleOutOfRange,
-
-  /// The cap is lower than the number of people already going.
-  maxPeopleBelowGoing,
-}
 
 /// Holds events near the user and applies every rule for showing,
 /// sorting, joining, creating, and editing them. Supabase access goes
@@ -143,11 +86,11 @@ class EventProvider extends ChangeNotifier {
     required SharedPreferences preferences,
     required this.currentUserId,
     DateTime Function()? now,
-  })  : _repository = repository,
-        _calendar = calendar,
-        _location = location,
-        _preferences = preferences,
-        _now = now ?? DateTime.now {
+  }) : _repository = repository,
+       _calendar = calendar,
+       _location = location,
+       _preferences = preferences,
+       _now = now ?? DateTime.now {
     _radiusMiles = _readRadius();
     _location.addListener(_onLocationChanged);
     _changes = _repository.watchChanges().listen((_) => load());
@@ -187,7 +130,9 @@ class EventProvider extends ChangeNotifier {
   /// returns: the events to list for that day
   List<Event> eventsOn(DateTime day) {
     return _sorted(
-      _events.where((event) => _isVisible(event) && _isSameDay(event.startsAt, day)),
+      _events.where(
+        (event) => _isVisible(event) && _isSameDay(event.startsAt, day),
+      ),
     );
   }
 
@@ -614,7 +559,8 @@ class EventProvider extends ChangeNotifier {
   double _milesBetween(double lat1, double lng1, double lat2, double lng2) {
     final sinLat = math.sin(_toRadians(lat2 - lat1) / 2);
     final sinLng = math.sin(_toRadians(lng2 - lng1) / 2);
-    final a = sinLat * sinLat +
+    final a =
+        sinLat * sinLat +
         math.cos(_toRadians(lat1)) *
             math.cos(_toRadians(lat2)) *
             sinLng *

@@ -21,6 +21,11 @@ class Profile {
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'display_name': displayName, 'bio': bio, 'phone_number': phoneNumber};
+    return {
+      'id': id,
+      'display_name': displayName,
+      'bio': bio,
+      'phone_number': phoneNumber,
+    };
   }
 }

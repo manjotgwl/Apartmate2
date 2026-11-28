@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Return a collection of widgets that tells the user that they currently 
+// Return a collection of widgets that tells the user that they currently
 // do not have an internet connection and thus cannot use this app.
 class NoInternetView extends StatelessWidget {
   const NoInternetView({super.key});
